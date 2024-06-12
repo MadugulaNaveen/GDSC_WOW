@@ -41,7 +41,16 @@ To use the Highlights Generator, follow these steps:
     pip install -r requirements. txt
     python manage.py runserver
   - The webapp run on the local server.
+    
+### Contributors
 
+Meet the team behind the Highlights Generator:
+
+- **[V.Likhitha Sai](https://github.com/Likhithasai04)**
+- **[Indravathi Mamidi](https://github.com/Indravathimamidi)**
+- **[Ommi Sowjanya](https://github.com/Sowjanya-Ommi)**
+- **[Naveen Madugula](https://github.com/MadugulaNaveen)**
+  
 ### Contributing
 
 We welcome contributions from the community. If you have suggestions for improvements or new features, please feel free to open an issue or submit a pull request.
