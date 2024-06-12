@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Input and Output</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #333;
+        }
+        .container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        input[type="file"] {
+            margin: 20px 0;
+            padding: 10px;
+            border: 2px solid #4CAF50;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        video {
+            width: 100%;
+            max-width: 500px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            width: 50%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transfrom :translateX(-50%);
+            }
+        button:hover{
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+        .show{
+            display: block;
+        }
+        .loader {
+            border: 6px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 6px solid #3498db;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite; 
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload and Watch Video</h1>
+        <form class="{{ hide }}" method="post" action="getHighlights"  enctype="multipart/form-data" id="videoForm">
+          {% csrf_token %}
+          <input name="inputVideo" type="file" accept="video/*" id="videoInput">
+          <br>
+          <button type="submit">Get Highlights</button>
+        </form>
+        <div class="loader" id="loader">Grab a cup of coffe and come back, we'll get it ready</div>
+          <div class="highlights {{ show }}">
+            <video id="videoPlayer" controls>
+                <source src="media/highlightsVideo.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+            <form method="post" action="index">
+                {% csrf_token %}
+                <button type="submit" class="resetButton" onClick=resetButton()>Reset</button>
+            <form>
+          </div>
+    </div>
+
+    <script>
+        const videoInput = document.getElementById('videoInput');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const loader = document.getElementById('loader');
+        const videoForm = document.getElementById('videoForm');
+
+        videoInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const fileURL = URL.createObjectURL(file);
+                videoPlayer.src = fileURL;
+                videoPlayer.style.display = 'block';
+            }
+        });
+
+        videoForm.addEventListener('submit', function() {
+            loader.style.display = 'block';
+        });
+
+        function resetButton() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
