@@ -35,7 +35,8 @@ To use the Highlights Generator, follow these steps:
   - ```
     git clone https://github.com/MadugulaNaveen/GDSC_WOW.git
   - or download the zip file.
-2. Run the below commands
+2. Get your gemini api key and put in the api/utilities.py file.
+3. Run the below commands
   - ```
     cd GDSC_WOW
     pip install -r requirements. txt
