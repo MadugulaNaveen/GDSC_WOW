@@ -8,10 +8,11 @@ We are excited to present our project, **Video Highlights Extractor**, developed
 
 In the era of abundant digital content, viewers often struggle with the task of finding the most interesting and important segments within long videos. Whether it's for sports, lectures, or any event coverage, manually creating highlight reels is time-consuming. Our project aims to automate this process, providing a seamless way to generate highlight videos.
 
-##3 Solution
+### Solution
 
 The **Highlights Genearator** leverages advanced video processing techniques to identify and extract key moments from lengthy videos. The extracted clips are then merged into a single, cohesive highlight video. This tool is designed to save time and effort while ensuring that viewers do not miss out on significant content.
 
+[[Sample Video that we have generated](https://github.com/MadugulaNaveen/GDSC_WOW/assets/110622667/9989ec63-d781-4bee-98d9-82aa61fd348b)]
 ### Features
 
 - **Automatic Key Moment Detection**: Utilizes algorithms to detect and extract the most significant segments from long videos.
@@ -41,6 +42,6 @@ To use the Highlights Generator, follow these steps:
     python manage.py runserver
   - The webapp run on the local server.
 
-## Contributing
+### Contributing
 
 We welcome contributions from the community. If you have suggestions for improvements or new features, please feel free to open an issue or submit a pull request.
