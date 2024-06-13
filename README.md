@@ -15,7 +15,7 @@ The **Highlights Genearator** leverages advanced video processing techniques to 
 [[Sample Video that we have generated](https://github.com/MadugulaNaveen/GDSC_WOW/assets/110622667/9989ec63-d781-4bee-98d9-82aa61fd348b)]
 ### Features
 
-- **Automatic Key Moment Detection**: Utilizes algorithms to detect and extract the most significant segments from long videos.
+- **Automatic Key Moment Detection**: Utilizes Gemini API to extract the most significant segments from long videos.
 - **Seamless Merging**: Combines extracted highlights into a single, well-structured video.
 - **User-Friendly Interface**: Easy to use, with minimal input required from the user.
 - **Versatile Application**: Suitable for various types of videos, including sports, lectures, and event coverage.
