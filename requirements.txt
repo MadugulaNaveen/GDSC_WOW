@@ -24,3 +24,4 @@ moviepy
 gunicorn
 uvicorn
 whitenoise==6.7.0
+google-cloud-storage
