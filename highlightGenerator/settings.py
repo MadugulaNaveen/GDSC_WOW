@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-cm@frmf+au($!)4r=!#^5y=1@s#=2)w&=!k2m_uo#wl_g@5u7f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["highlightgenerator.onrender.com","*"]
 
 
 # Application definition
