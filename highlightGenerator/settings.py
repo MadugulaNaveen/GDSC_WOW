@@ -135,7 +135,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 GCS_BUCKET_NAME = 'highlightgenerator'
-GCS_CREDENTIALS = 'Google-Cloud.json'
+GCS_CREDENTIALS = '/etc/secrets/Google-Cloud.json'
 
 # Media files (User uploads)
 MEDIA_URL = f'https://storage.googleapis.com/{GCS_BUCKET_NAME}/'
