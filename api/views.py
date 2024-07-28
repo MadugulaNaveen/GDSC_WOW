@@ -7,6 +7,9 @@ import os
 
 logger = logging.getLogger(__name__)
 
+def index(request):
+    return render(request, "index.html", {"show": "hidden", "hide": "show"})
+
 def upload_to_gcs(file, gcs_path):
     client = storage.Client.from_service_account_json(settings.GCS_CREDENTIALS)
     bucket = client.bucket(settings.GCS_BUCKET_NAME)
