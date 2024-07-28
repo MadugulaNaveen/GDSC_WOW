@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ["highlightgenerator.onrender.com","*"]
 
 INSTALLED_APPS = [
     "api",
+    "storages",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -132,5 +133,9 @@ if not DEBUG:
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GCS_BUCKET_NAME = 'highlightgenerator'
+GCS_CREDENTIALS = 'Google-Cloud.json'
+
+# Media files (User uploads)
+MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'

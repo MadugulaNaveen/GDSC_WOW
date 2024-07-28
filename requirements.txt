@@ -1,4 +1,3 @@
-asgiref==3.7.2
 Django==5.0.1
 django-allauth==0.61.1
 djangorestframework==3.14.0
@@ -25,3 +24,4 @@ gunicorn
 uvicorn
 whitenoise==6.7.0
 google-cloud-storage
+django-storages
