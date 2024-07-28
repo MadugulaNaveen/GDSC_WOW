@@ -138,4 +138,4 @@ GCS_BUCKET_NAME = 'highlightgenerator'
 GCS_CREDENTIALS = 'Google-Cloud.json'
 
 # Media files (User uploads)
-MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
+MEDIA_URL = f'https://storage.googleapis.com/{GCS_BUCKET_NAME}/'
