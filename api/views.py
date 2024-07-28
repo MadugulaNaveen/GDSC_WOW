@@ -8,7 +8,7 @@ import os
 logger = logging.getLogger(__name__)
 
 def upload_to_gcs(file, gcs_path):
-    client = storage.Client.from_service_account_json(settings.GS_CREDENTIALS)
+    client = storage.Client.from_service_account_json(settings.GCS_CREDENTIALS)
     bucket = client.bucket(settings.GCS_BUCKET_NAME)
     blob = bucket.blob(gcs_path)
     blob.upload_from_file(file)
