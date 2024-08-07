@@ -16,12 +16,11 @@ GCS_BUCKET_NAME = 'highlightgenerator'
 
 # Google Cloud Storage configuration
 def upload_to_gcs(file_path, gcs_path):
-    """Uploads the given file to GCS."""
     client = storage.Client.from_service_account_json(settings.GCS_CREDENTIALS)
-    bucket = client.bucket(GCS_BUCKET_NAME)
+    bucket = client.bucket(settings.GCS_BUCKET_NAME)
     blob = bucket.blob(gcs_path)
     blob.upload_from_filename(file_path)
-    blob.make_public()
+    blob.make_public()  # Make the file public so that it can be accessed via URL
     return blob.public_url
 
 def download_from_gcs(gcs_path, local_path):
