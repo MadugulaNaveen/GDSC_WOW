@@ -1,9 +1,9 @@
 import os
 import time
-import google.generativeai as genai
-from google.cloud import storage
 import tempfile
 import re
+import google.generativeai as genai
+from google.cloud import storage
 from moviepy.editor import VideoFileClip, concatenate_videoclips
 from moviepy.video.fx import fadein, fadeout
 
@@ -86,8 +86,11 @@ def create_clippings_with_transitions(video_path, time_frames, output_folder, tr
             transition_duration = min(transition_duration, subclip.duration / 2)
             subclip = fadeout.fadeout(subclip, duration=transition_duration)
 
-        subclip.write_videofile(output_path, codec="libx264", audio_codec="aac", temp_audiofile="temp-audio.m4a", remove_temp=True)
-        print(f"Clip {i+1} created: {output_path}")
+        try:
+            subclip.write_videofile(output_path, codec="libx264", audio_codec="aac", temp_audiofile="temp-audio.m4a", remove_temp=True)
+            print(f"Clip {i+1} created: {output_path}")
+        except Exception as e:
+            print(f"Error creating clip {i+1}: {e}")
 
 # Merge all clips to get the final video
 def merge_videos_from_folder(folder_path, output_path):
@@ -114,35 +117,56 @@ def merge_videos_from_folder(folder_path, output_path):
         print(f"Error during concatenation or writing the video file: {e}")
 
 def getHighlightedVideo(video_path, output_folder, output_video):
-    # Upload the video to Gemini
-    gemini_file = upload_to_gemini(video_path, mime_type="video/mp4")
+    # Create temporary directories and paths
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_video_path = os.path.join(temp_dir, os.path.basename(video_path))
 
-    # Wait for the file to be processed
-    wait_for_files_active([gemini_file])
+        # Download video from GCS
+        download_from_gcs(video_path, temp_video_path)
 
-    # Start a chat session with Gemini
-    chat_session = model.start_chat(
-        history=[
-            {
-                "role": "user",
-                "parts": [
-                    gemini_file,
-                ],
-            },
-        ]
-    )
+        # Upload the video to Gemini
+        gemini_file = upload_to_gemini(temp_video_path, mime_type="video/mp4")
 
-    # Send the message and get the response
-    response = chat_session.send_message(
-        "Extract the most important highlights from the video and provide the start and end time frames of each important highlight. The total time of the highlights must be less than 20 seconds. Provide the output in the form of a list."
-    )
+        # Wait for the file to be processed
+        wait_for_files_active([gemini_file])
 
-    # Extract the time frames from the response
-    text = response.text
-    time_frames = extract_time_frames(text)
+        # Start a chat session with Gemini
+        chat_session = model.start_chat(
+            history=[
+                {
+                    "role": "user",
+                    "parts": [
+                        gemini_file,
+                    ],
+                },
+            ]
+        )
 
-    # Create clips based on the time frames
-    create_clippings_with_transitions(video_path, time_frames, output_folder)
+        # Send the message and get the response
+        response = chat_session.send_message(
+            "Extract the most important highlights from the video and provide the start and end time frames of each important highlight. The total time of the highlights must be less than 20 seconds. Provide the output in the form of a list."
+        )
 
-    # Merge all the clips to create the final video
-    merge_videos_from_folder(output_folder, output_video)
+        # Extract the time frames from the response
+        text = response.text
+        time_frames = extract_time_frames(text)
+
+        # Create clips based on the time frames
+        create_clippings_with_transitions(temp_video_path, time_frames, temp_dir)
+
+        # Merge all the clips to create the final video
+        final_video_path = os.path.join(temp_dir, "final_highlight_video.mp4")
+        merge_videos_from_folder(temp_dir, final_video_path)
+
+        # Upload the final video to GCS
+        final_video_url = upload_to_gcs(final_video_path, output_video)
+
+        return final_video_url
+
+# Example usage
+video_gcs_path = "path/to/input/video.mp4"
+output_gcs_path = "path/to/output/final_highlight_video.mp4"
+output_folder = "output_folder"
+
+highlight_video_url = getHighlightedVideo(video_gcs_path, output_folder, output_gcs_path)
+print(f"Highlighted video available at: {highlight_video_url}")
