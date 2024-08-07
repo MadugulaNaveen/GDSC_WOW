@@ -6,15 +6,19 @@ import google.generativeai as genai
 from google.cloud import storage
 from moviepy.editor import VideoFileClip, concatenate_videoclips
 from moviepy.video.fx import fadein, fadeout
+from django.conf import settings
 
 # Configure Gemini API key
 genai.configure(api_key=os.getenv("GEMINIAPIKEY"))
 
+# Google Cloud Storage bucket name
+GCS_BUCKET_NAME = 'highlightgenerator'
+
 # Google Cloud Storage configuration
 def upload_to_gcs(file_path, gcs_path):
     """Uploads the given file to GCS."""
-    client = storage.Client.from_service_account_json(os.getenv("GCS_CREDENTIALS"))
-    bucket = client.bucket(os.getenv("GCS_BUCKET_NAME"))
+    client = storage.Client.from_service_account_json(settings.GCS_CREDENTIALS)
+    bucket = client.bucket(GCS_BUCKET_NAME)
     blob = bucket.blob(gcs_path)
     blob.upload_from_filename(file_path)
     blob.make_public()
@@ -22,8 +26,8 @@ def upload_to_gcs(file_path, gcs_path):
 
 def download_from_gcs(gcs_path, local_path):
     """Downloads a file from GCS."""
-    client = storage.Client.from_service_account_json(os.getenv("GCS_CREDENTIALS"))
-    bucket = client.bucket(os.getenv("GCS_BUCKET_NAME"))
+    client = storage.Client.from_service_account_json(settings.GCS_CREDENTIALS)
+    bucket = client.bucket(GCS_BUCKET_NAME)
     blob = bucket.blob(gcs_path)
     blob.download_to_filename(local_path)
 
