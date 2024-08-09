@@ -7,7 +7,7 @@ from google.cloud import storage
 from moviepy.editor import VideoFileClip, concatenate_videoclips
 from moviepy.video.fx import fadein, fadeout
 from django.conf import settings
-
+import google
 # Configure Gemini API key
 genai.configure(api_key=os.getenv("GEMINIAPIKEY"))
 
@@ -23,12 +23,23 @@ def upload_to_gcs(file_path, gcs_path):
     blob.make_public()  # Make the file public so that it can be accessed via URL
     return blob.public_url
 
-def download_from_gcs(gcs_path, local_path):
-    """Downloads a file from GCS."""
-    client = storage.Client.from_service_account_json(settings.GCS_CREDENTIALS)
-    bucket = client.bucket(GCS_BUCKET_NAME)
-    blob = bucket.blob(gcs_path)
-    blob.download_to_filename(local_path)
+def download_from_gcs(video_path, local_path):
+    client = storage.Client.from_service_account_json(os.getenv("GCS_CREDENTIALS"))
+    bucket_name = "highlightgenerator"  # Your GCS bucket name
+    bucket = client.bucket(bucket_name)
+    blob = bucket.blob(video_path)
+    
+    if not blob.exists():
+        print(f"Error: The object {video_path} does not exist in bucket {bucket_name}.")
+        return None
+    
+    try:
+        blob.download_to_filename(local_path)
+        print(f"Downloaded {video_path} to {local_path}")
+    except google.api_core.exceptions.NotFound as e:
+        print(f"Error: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def upload_to_gemini(path, mime_type=None):
     """Uploads the given file to Gemini."""
