@@ -176,11 +176,3 @@ def getHighlightedVideo(video_path, output_folder, output_video):
         final_video_url = upload_to_gcs(final_video_path, output_video)
 
         return final_video_url
-
-# Example usage
-video_gcs_path = "path/to/input/video.mp4"
-output_gcs_path = "path/to/output/final_highlight_video.mp4"
-output_folder = "output_folder"
-
-highlight_video_url = getHighlightedVideo(video_gcs_path, output_folder, output_gcs_path)
-print(f"Highlighted video available at: {highlight_video_url}")

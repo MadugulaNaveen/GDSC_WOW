@@ -39,10 +39,7 @@ def getHighlights(request):
             output_video_temp_path = os.path.join(tempfile.gettempdir(), 'highlightsVideo.mp4')
             
             # Process the video
-            getHighlightedVideo(temp_video_path, tempfile.gettempdir(), output_video_temp_path)
-            
-            # Upload the processed video to GCS
-            output_video_url = upload_to_gcs(output_video_temp_path, output_video_path)
+            output_video_url = getHighlightedVideo(temp_video_path, tempfile.gettempdir(), output_video_temp_path)
         
         except Exception as e:
             logger.error(f"Error in getHighlights: {e}")
