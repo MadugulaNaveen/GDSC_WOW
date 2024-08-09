@@ -24,7 +24,7 @@ def upload_to_gcs(file_path, gcs_path):
     return blob.public_url
 
 def download_from_gcs(video_path, local_path):
-    client = storage.Client.from_service_account_json(os.getenv("GCS_CREDENTIALS"))
+    client = storage.Client.from_service_account_json(settings.GCS_CREDENTIALS)
     bucket_name = "highlightgenerator"  # Your GCS bucket name
     bucket = client.bucket(bucket_name)
     blob = bucket.blob(video_path)
